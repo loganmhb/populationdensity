@@ -1,0 +1,9 @@
+{
+  "name": "anonymous",
+  "private": true,
+  "version": "0.0.1",
+  "dependencies": {
+    "d3-scale-chromatic": "^1.1.0",
+    "topojson": "1"
+  }
+}

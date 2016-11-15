@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+</style>
+<body>
+  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="https://d3js.org/d3-color.v1.min.js"></script>
+  <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="//d3js.org/topojson.v1.min.js"></script>
+  <script>
+   // TODO:
+   // - Highlight state borders
+   // - Numbers on mouseover
+   var width = 960;
+   var height = 600;
+
+   var path = d3.geo.path()
+                .projection(null);
+
+   var svg = d3.select("body").append("svg")
+               .attr("width", width)
+               .attr("height", height)
+
+   d3.json("build/counties.json", function(error, us) {
+       if (error) return console.error(error);
+
+       var maxPop = d3.max(us.objects.counties.geometries, function (d) {
+           return d.properties.population
+       })
+
+       console.log(maxPop);
+       var colorByPop = function (d) {
+           return d3.interpolateBlues(Math.sqrt(d.properties.population / maxPop / path.area(d) * 200));
+       }
+       svg.append("g")
+          .attr("class", "counties")
+          .selectAll("path")
+          .data(topojson.feature(us, us.objects.counties).features)
+          .enter().append("path")
+          .attr("fill", colorByPop)
+          .attr("d", path)
+   })
+  </script>
+</body>
