@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-
+  .boundary {
+      fill: none;
+      stroke: #777;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+  }
 </style>
 <body>
   <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -23,7 +28,7 @@
                .attr("width", width)
                .attr("height", height)
 
-   d3.json("build/counties.json", function(error, us) {
+   d3.json("build/states.json", function(error, us) {
        if (error) return console.error(error);
 
        var maxPop = d3.max(us.objects.counties.geometries, function (d) {
@@ -40,7 +45,16 @@
           .data(topojson.feature(us, us.objects.counties).features)
           .enter().append("path")
           .attr("fill", colorByPop)
-          .attr("d", path)
+          .attr("d", path);
+
+       svg.append("g")
+          .attr("class", "states")
+          .selectAll("path")
+          .data(topojson.feature(us, us.objects.states).features)
+          .enter().append("path")
+          .attr("class", "boundary")
+          .attr("d", path);
    })
-  </script>
+
+   </script>
 </body>

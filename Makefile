@@ -18,3 +18,11 @@ build/counties.json: build/gz_2010_us_050_00_20m.shp ACS_14_5YR_B01003_with_ann.
 			.translate([width / 2, height / 2])' \
 		--simplify=.5 \
 		-- counties=$<
+
+build/states.json: build/counties.json
+	node_modules/.bin/topojson-merge \
+		-o $@ \
+		--in-object=counties \
+		--out-object=states \
+		--key='d.id.substring(0, 2)' \
+		-- $<
