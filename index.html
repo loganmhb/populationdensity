@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <style>
   .boundary {
-      fill: none;
+      fill: transparent;
       stroke: #777;
       stroke-linejoin: round;
       stroke-linecap: round;
@@ -53,6 +53,8 @@
           .data(topojson.feature(us, us.objects.states).features)
           .enter().append("path")
           .attr("class", "boundary")
+          .on("mouseover", function(d, i) {d3.select(this.parentNode.appendChild(this)).style({'stroke-opacity':1,'stroke':'#F00'})})
+          .on("mouseout", function(d, i) {d3.select(this).style({'stroke-opacity':1,'stroke':'#777'})})
           .attr("d", path);
    })
 
